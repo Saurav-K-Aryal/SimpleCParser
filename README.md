@@ -13,7 +13,7 @@ Make a single program in the C language by augmenting and integrating the exampl
 
 
                                 parser <filename> 
-                    Where, filename should be replaced by a real file name.
+                    Where, <filename> should be replaced by a real file name.
 
 *Note: Here textbook refers to “Concepts Of Programming Languages” by Robert W. Sebesta.*
 
