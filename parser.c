@@ -57,12 +57,11 @@ void term();
 /* main driver */
 int main() {
 /* Open the input data file and process its contents */
-	if ((in_fp = fopen("sample.in", "r")) == NULL)
+	if ((in_fp = fopen("sample.txt", "r")) == NULL)
 		printf("ERROR - cannot open front.in \n");
 	else {
 		while ((read = getline(&line, &len, in_fp)) != -1) {
 			col_num = 1;
-			printf("\n\n");
 			row_num++;
 			indexChar = 0;
 			getChar();
@@ -71,7 +70,8 @@ int main() {
 					lex();	
 					expr();
 				} while (nextToken != EOF);
-			}	
+			}
+		    printf("\n\n");
 		}	
 	}
 	return 0;
