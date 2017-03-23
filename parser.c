@@ -55,24 +55,31 @@ void term();
 
 
 /* main driver */
-int main() {
-/* Open the input data file and process its contents */
-	if ((in_fp = fopen("sample.txt", "r")) == NULL)
-		printf("ERROR - cannot open front.in \n");
-	else {
-		while ((read = getline(&line, &len, in_fp)) != -1) {
-			col_num = 1;
-			row_num++;
-			indexChar = 0;
-			getChar();
-			if(line != NULL){
-				do {
-					lex();	
-					expr();
-				} while (nextToken != EOF);
-			}
-		    printf("\n\n");
-		}	
+int main(int argc, char *argv[]) {
+ /* argc should be 2 for correct execution */
+	if (argc != 2){
+        printf("usage:\nparser filename\n\n");
+        exit(0);
+    }
+    else {
+	/* Open the input data file and process its contents */
+		if ((in_fp = fopen(argv[1], "r")) == NULL)
+			printf("ERROR - cannot open %s\n", argv[1]);
+		else {
+			while ((read = getline(&line, &len, in_fp)) != -1) {
+				col_num = 1;
+				row_num++;
+				indexChar = 0;
+				getChar();
+				if(line != NULL){
+					do {
+						lex();	
+						expr();
+					} while (nextToken != EOF);
+				}
+			    printf("\n\n");
+			}	
+		}
 	}
 	return 0;
 }
