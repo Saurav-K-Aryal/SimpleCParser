@@ -12,15 +12,15 @@ Make a single program in the C language by augmenting and integrating the exampl
 
 
                                 make
-              this command compiles the source parser.c to executable called parser
+              #this command compiles the source parser.c to executable called parser
 
-*Note: to clean the build, use **make clean** *
+*Note: to clean the build, use **make clean***
 
 ----------
 
 To execute the program:
 
-                            parser <filename> 
+                            ./parser <filename> 
                     Where, <filename> should be replaced by a real file name.
 
 *Note: Here textbook refers to “Concepts Of Programming Languages” by Robert W. Sebesta.*
