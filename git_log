@@ -1,0 +1,1233 @@
+commit 35603a8db5ee072b10f3c7e41c0a6dbbea3ea3c5
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Thu Mar 23 02:57:25 2017 -0400
+
+    README changes
+
+diff --git a/README.md b/README.md
+index 08d44c5..cbae209 100644
+--- a/README.md
++++ b/README.md
+@@ -12,15 +12,15 @@ Make a single program in the C language by augmenting and integrating the exampl
+ 
+ 
+                                 make
+-              this command compiles the source parser.c to executable called parser
++              #this command compiles the source parser.c to executable called parser
+ 
+-*Note: to clean the build, use **make clean** *
++*Note: to clean the build, use **make clean***
+ 
+ ----------
+ 
+ To execute the program:
+ 
+-                            parser <filename> 
++                            ./parser <filename> 
+                     Where, <filename> should be replaced by a real file name.
+ 
+ *Note: Here textbook refers to “Concepts Of Programming Languages” by Robert W. Sebesta.*
+
+commit 0f84666edf6fa6e66b9d6d0dc660b168f246b1d1
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Thu Mar 23 02:55:57 2017 -0400
+
+    Finished with testing, Editing the README
+
+diff --git a/README.md b/README.md
+index 338acfc..08d44c5 100644
+--- a/README.md
++++ b/README.md
+@@ -1,18 +1,26 @@
+-# README
+-
+ # Simple C Parser - Recursive Descent
++
+ ## Author: Saurav Keshari Aryal
+ ## Assignment: Structures of Programming Languages - S2017
+ ## Howard University, Washington DC.
+ 
+ 
+ 
+-## **Description:**
++## **Assignment:**
++
++Make a single program in the C language by augmenting and integrating the example C code in Section 4.2 and 4.4.1 on the textbook. The program is supposed to read a text file line by line. For each line, it produces the output similar to what's shown on the textbook. If a syntax error is found, it should print an error message indicating where the error occurs in the line. The program should be compiled and cleaned by the following make command:
++
++
++                                make
++              this command compiles the source parser.c to executable called parser
++
++*Note: to clean the build, use **make clean** *
+ 
+-Make a single program in the C language by augmenting and integrating the example C code in Section 4.2 and 4.4.1 on the textbook. The program is supposed to read a text file line by line. For each line, it produces the output similar to what's shown on the textbook. If a syntax error is found, it should print an error message indicating where the error occurs in the line. The program should be invoked by the following command: 
++----------
+ 
++To execute the program:
+ 
+-                                parser <filename> 
++                            parser <filename> 
+                     Where, <filename> should be replaced by a real file name.
+ 
+ *Note: Here textbook refers to “Concepts Of Programming Languages” by Robert W. Sebesta.*
+
+commit 94e0b9d1a09302182af8d6a8c2fc1e6db8f833ec
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Thu Mar 23 02:48:12 2017 -0400
+
+    Done with Makefile, final testing and preparing for submission
+
+diff --git a/Makefile b/Makefile
+index 2d7d79c..b45bec3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,2 +1,5 @@
+-parser: parser.c
+-     gcc -o parser parser.c -I.
+\ No newline at end of file
++parser : parser.c 
++	gcc -o parser parser.c
++
++clean:
++	rm -f parser
+\ No newline at end of file
+
+commit b58fa41ced3c7fa12288610d1a41d9a877189b73
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Thu Mar 23 02:39:41 2017 -0400
+
+    simple command line argument handling and added makefile
+
+diff --git a/Makefile b/Makefile
+new file mode 100644
+index 0000000..2d7d79c
+--- /dev/null
++++ b/Makefile
+@@ -0,0 +1,2 @@
++parser: parser.c
++     gcc -o parser parser.c -I.
+\ No newline at end of file
+diff --git a/parser b/parser
+index 2030f66..ac92bca 100755
+Binary files a/parser and b/parser differ
+diff --git a/parser.c b/parser.c
+index f91e710..718c90b 100644
+--- a/parser.c
++++ b/parser.c
+@@ -55,24 +55,31 @@ void term();
+ 
+ 
+ /* main driver */
+-int main() {
+-/* Open the input data file and process its contents */
+-	if ((in_fp = fopen("sample.txt", "r")) == NULL)
+-		printf("ERROR - cannot open front.in \n");
+-	else {
+-		while ((read = getline(&line, &len, in_fp)) != -1) {
+-			col_num = 1;
+-			row_num++;
+-			indexChar = 0;
+-			getChar();
+-			if(line != NULL){
+-				do {
+-					lex();	
+-					expr();
+-				} while (nextToken != EOF);
+-			}
+-		    printf("\n\n");
+-		}	
++int main(int argc, char *argv[]) {
++ /* argc should be 2 for correct execution */
++	if (argc != 2){
++        printf("usage:\nparser filename\n\n");
++        exit(0);
++    }
++    else {
++	/* Open the input data file and process its contents */
++		if ((in_fp = fopen(argv[1], "r")) == NULL)
++			printf("ERROR - cannot open %s\n", argv[1]);
++		else {
++			while ((read = getline(&line, &len, in_fp)) != -1) {
++				col_num = 1;
++				row_num++;
++				indexChar = 0;
++				getChar();
++				if(line != NULL){
++					do {
++						lex();	
++						expr();
++					} while (nextToken != EOF);
++				}
++			    printf("\n\n");
++			}	
++		}
+ 	}
+ 	return 0;
+ }
+diff --git a/sample.txt b/sample.txt
+index 4eac9b6..c43fbc8 100644
+--- a/sample.txt
++++ b/sample.txt
+@@ -1,2 +1,2 @@
+ (sum + 47) / total
+-(sum + 47) / total
+\ No newline at end of file
++(sum + 47 / total
+\ No newline at end of file
+
+commit 2c9a0d659dee7838461110453399296c18d37304
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Thu Mar 23 02:08:45 2017 -0400
+
+    changing input from .in to .txt
+
+diff --git a/parser b/parser
+index 58c0e55..2030f66 100755
+Binary files a/parser and b/parser differ
+diff --git a/parser.c b/parser.c
+index 90d6366..f91e710 100644
+--- a/parser.c
++++ b/parser.c
+@@ -57,12 +57,11 @@ void term();
+ /* main driver */
+ int main() {
+ /* Open the input data file and process its contents */
+-	if ((in_fp = fopen("sample.in", "r")) == NULL)
++	if ((in_fp = fopen("sample.txt", "r")) == NULL)
+ 		printf("ERROR - cannot open front.in \n");
+ 	else {
+ 		while ((read = getline(&line, &len, in_fp)) != -1) {
+ 			col_num = 1;
+-			printf("\n\n");
+ 			row_num++;
+ 			indexChar = 0;
+ 			getChar();
+@@ -71,7 +70,8 @@ int main() {
+ 					lex();	
+ 					expr();
+ 				} while (nextToken != EOF);
+-			}	
++			}
++		    printf("\n\n");
+ 		}	
+ 	}
+ 	return 0;
+diff --git a/sample.in b/sample.in
+deleted file mode 100644
+index 4eac9b6..0000000
+--- a/sample.in
++++ /dev/null
+@@ -1,2 +0,0 @@
+-(sum + 47) / total
+-(sum + 47) / total
+\ No newline at end of file
+diff --git a/sample.txt b/sample.txt
+new file mode 100644
+index 0000000..4eac9b6
+--- /dev/null
++++ b/sample.txt
+@@ -0,0 +1,2 @@
++(sum + 47) / total
++(sum + 47) / total
+\ No newline at end of file
+
+commit 4ba73721c2cde4cca45d85959ad9e9faec9c22c6
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Thu Mar 23 02:07:12 2017 -0400
+
+    missed column count by 1
+
+diff --git a/parser b/parser
+index 44b542a..58c0e55 100755
+Binary files a/parser and b/parser differ
+diff --git a/parser.c b/parser.c
+index c71ded1..90d6366 100644
+--- a/parser.c
++++ b/parser.c
+@@ -26,7 +26,7 @@ ssize_t read;
+ char* line = NULL;
+ int indexChar;
+ int row_num=0;
+-int col_num=0;
++int col_num=1;
+ 
+ /* Function declarations */
+ void addChar();
+@@ -61,7 +61,7 @@ int main() {
+ 		printf("ERROR - cannot open front.in \n");
+ 	else {
+ 		while ((read = getline(&line, &len, in_fp)) != -1) {
+-			col_num = 0;
++			col_num = 1;
+ 			printf("\n\n");
+ 			row_num++;
+ 			indexChar = 0;
+@@ -119,7 +119,7 @@ int lookup(char ch) {
+ }
+ 
+ void error(){
+-	printf("ERROR! in line %d at column %d\n\n", row_num, col_num);
++	printf("Syntax ERROR! in line %d at column %d\n\n", row_num, col_num);
+ 	exit(0);
+ }
+ 
+diff --git a/sample.in b/sample.in
+index c43fbc8..4eac9b6 100644
+--- a/sample.in
++++ b/sample.in
+@@ -1,2 +1,2 @@
+ (sum + 47) / total
+-(sum + 47 / total
+\ No newline at end of file
++(sum + 47) / total
+\ No newline at end of file
+
+commit 6eb7fafd6cf47c78c097fea6a6840a2e4af56593
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Thu Mar 23 01:56:23 2017 -0400
+
+    fixed simple bug
+
+diff --git a/parser b/parser
+index f84ed2e..44b542a 100755
+Binary files a/parser and b/parser differ
+diff --git a/parser.c b/parser.c
+index abcbbda..c71ded1 100644
+--- a/parser.c
++++ b/parser.c
+@@ -61,6 +61,7 @@ int main() {
+ 		printf("ERROR - cannot open front.in \n");
+ 	else {
+ 		while ((read = getline(&line, &len, in_fp)) != -1) {
++			col_num = 0;
+ 			printf("\n\n");
+ 			row_num++;
+ 			indexChar = 0;
+
+commit af38156e5941f842a9eac7949c27e857dfb43bb9
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Thu Mar 23 01:54:01 2017 -0400
+
+    Added row number and column number tracking for showing where the error is, column number has a bug
+
+diff --git a/parser b/parser
+index df98dfd..f84ed2e 100755
+Binary files a/parser and b/parser differ
+diff --git a/parser.c b/parser.c
+index bc645a2..abcbbda 100644
+--- a/parser.c
++++ b/parser.c
+@@ -1,6 +1,7 @@
+ /* parser.c - a lexical analyzer system and parser for simple
+  arithmetic expressions */
+ //  Adapted from Concepts of Programming Languages - Robert W. Sebesta
++// Author of Edit: Saurav Keshari Aryal
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+@@ -24,6 +25,8 @@ size_t len = 0;
+ ssize_t read;
+ char* line = NULL;
+ int indexChar;
++int row_num=0;
++int col_num=0;
+ 
+ /* Function declarations */
+ void addChar();
+@@ -59,6 +62,7 @@ int main() {
+ 	else {
+ 		while ((read = getline(&line, &len, in_fp)) != -1) {
+ 			printf("\n\n");
++			row_num++;
+ 			indexChar = 0;
+ 			getChar();
+ 			if(line != NULL){
+@@ -114,7 +118,8 @@ int lookup(char ch) {
+ }
+ 
+ void error(){
+-	printf("ERROR! in line %s\n", line);
++	printf("ERROR! in line %d at column %d\n\n", row_num, col_num);
++	exit(0);
+ }
+ 
+ /* factor
+@@ -148,10 +153,10 @@ void factor() {
+ } /* End of function factor */	
+ 
+ 
+-
+-
+-
+-
++/* term
++Parses strings in the language generated by the rule:
++<term> -> <factor> {(* | /) <factor>)
++*/
+ void term() {
+ 	printf("Enter <term>\n");
+ 	/* Parse the first factor */
+@@ -185,18 +190,6 @@ void expr() {
+ } /* End of function expr */
+ 
+ 
+-
+-
+-
+-
+-/* term
+-Parses strings in the language generated by the rule:
+-<term> -> <factor> {(* | /) <factor>)
+-*/
+-
+-
+-
+-
+ /* addChar - a function to add nextChar to lexeme */
+ void addChar() {
+ 	if (lexLen <= 98) {
+@@ -211,7 +204,9 @@ void addChar() {
+ /* getChar - a function to get the next character of
+ input and determine its character class */
+ void getChar() {
++
+ 	if (line[indexChar] != '\n' && line[indexChar] != '\0') {
++		col_num++;
+ 		nextChar = line[indexChar ++];
+ 		if (isalpha(nextChar))
+ 			charClass = LETTER;
+diff --git a/sample.in b/sample.in
+index 4eac9b6..c43fbc8 100644
+--- a/sample.in
++++ b/sample.in
+@@ -1,2 +1,2 @@
+ (sum + 47) / total
+-(sum + 47) / total
+\ No newline at end of file
++(sum + 47 / total
+\ No newline at end of file
+
+commit daa8beeb56e3caf4a2193164478f312c3386a593
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Thu Mar 23 01:43:44 2017 -0400
+
+    Added Multiline support
+
+diff --git a/parser b/parser
+index 1843969..df98dfd 100755
+Binary files a/parser and b/parser differ
+diff --git a/parser.c b/parser.c
+index ae7ac19..bc645a2 100644
+--- a/parser.c
++++ b/parser.c
+@@ -16,17 +16,23 @@ char nextChar;
+ int lexLen;
+ int token;
+ int nextToken;
++int row=0;
++int column=0;
+ FILE *in_fp, *fopen();
+ 
++size_t len = 0;
++ssize_t read;
++char* line = NULL;
++int indexChar;
++
+ /* Function declarations */
+ void addChar();
+ void getChar();
+ void getNonBlank();
+ int lex();
++void factor();
+ void expr();
+ void term();
+-void factor();
+-void error();
+ 
+ /* Character classes */
+ #define LETTER 0
+@@ -48,54 +54,68 @@ void error();
+ /* main driver */
+ int main() {
+ /* Open the input data file and process its contents */
+-if ((in_fp = fopen("sample.in", "r")) == NULL)
+-	printf("ERROR - cannot open input file. \n");
+-else {
+-	getChar();
+-	do {
+-	lex();
+-	expr();
+-	} while (nextToken != EOF);
+-}
+-return 0;
+-}
+-
+-
+-/* expr
+-Parses strings in the language generated by the rule:
+-<expr> -> <term> {(+ | -) <term>}
+-*/
+-void expr() {
+-	printf("Enter <expr>\n");
+-	/* Parse the first term */
+-	term();
+-	/* As long as the next token is + or -, get
+-	the next token and parse the next term */
+-	while (nextToken == ADD_OP || nextToken == SUB_OP) {
+-	lex();
+-	term();
++	if ((in_fp = fopen("sample.in", "r")) == NULL)
++		printf("ERROR - cannot open front.in \n");
++	else {
++		while ((read = getline(&line, &len, in_fp)) != -1) {
++			printf("\n\n");
++			indexChar = 0;
++			getChar();
++			if(line != NULL){
++				do {
++					lex();	
++					expr();
++				} while (nextToken != EOF);
++			}	
++		}	
+ 	}
+-	printf("Exit <expr>\n");
+-} /* End of function expr */
++	return 0;
++}
+ 
+ 
+-/* term
+-Parses strings in the language generated by the rule:
+-<term> -> <factor> {(* | /) <factor>)
+-*/
+-void term() {
+-	printf("Enter <term>\n");
+-	/* Parse the first factor */
+-	factor();
+-	/* As long as the next token is * or /, get the
+-	next token and parse the next factor */
+-	while (nextToken == MULT_OP || nextToken == DIV_OP) {
+-	lex();
+-	factor();
++/* lookup - a function to lookup operators and parentheses
++and return the token */
++int lookup(char ch) {
++	switch (ch) {
++		case '(':
++			addChar();
++			nextToken = LEFT_PAREN;
++			break;
++		case ')':
++			addChar();
++			nextToken = RIGHT_PAREN;
++			break;
++		case '+':
++			addChar();
++			nextToken = ADD_OP;
++			break;
++		case '-':
++			addChar();
++			nextToken = SUB_OP;
++			break;
++		case '*':
++			addChar();
++			nextToken = MULT_OP;
++			break;
++		case '/':
++			addChar();
++			nextToken = DIV_OP;
++			break;
++		case '=':
++			addChar();
++			nextToken = ASSIGN_OP;
++			break;
++		default:
++			addChar();
++			nextToken = EOF;
++			break;
+ 	}
+-	printf("Exit <term>\n");
+-} /* End of function term */ 
++	return nextToken;
++}
+ 
++void error(){
++	printf("ERROR! in line %s\n", line);
++}
+ 
+ /* factor
+ Parses strings in the language generated by the rule:
+@@ -105,7 +125,7 @@ void factor() {
+ 	printf("Enter <factor>\n");
+ 	/* Determine which RHS */
+ 	if (nextToken == IDENT || nextToken == INT_LIT)
+-	/* Get the next token */
++		/* Get the next token */
+ 		lex();
+ 	/* If the RHS is ( <expr>), call lex to pass over the
+ 	left parenthesis, call expr, and check for the right
+@@ -114,64 +134,67 @@ void factor() {
+ 		if (nextToken == LEFT_PAREN) {
+ 			lex();
+ 			expr();
+-		if (nextToken == RIGHT_PAREN)
+-			lex();
+-		else
+-			error();
++			if (nextToken == RIGHT_PAREN)
++				lex();
++			else
++				error();
+ 		} /* End of if (nextToken == ... */
+-	/* It was not an id, an integer literal, or a left
+-	parenthesis */
++		/* It was not an id, an integer literal, or a left
++		parenthesis */
+ 		else
+ 			error();
+ 	} /* End of else */
+ 	printf("Exit <factor>\n");;
+-}
+-/* End of function factor */
++} /* End of function factor */	
+ 
+-/* error
+-Prints syntax error with row and column number where error occurred.
+-*/
+-void error() {
+-	printf("Syntax Error!\n");
+-	exit(0);
+-}
+ 
+ 
+-/* lookup - a function to lookup operators and parentheses
+- and return the token */
+-int lookup(char ch) {
+-	switch (ch) {
+-		case '(':
+-		addChar();
+-		nextToken = LEFT_PAREN;
+-		break;
+-	case ')':
+-		addChar();
+-		nextToken = RIGHT_PAREN;
+-		break;
+-	case '+':
+-		addChar();
+-		nextToken = ADD_OP;
+-		break;
+-	case '-':
+-		addChar();
+-		nextToken = SUB_OP;
+-		break;
+-	case '*':
+-		addChar();
+-		nextToken = MULT_OP;
+-		break;
+-	case '/':
+-		addChar();
+-		nextToken = DIV_OP;
+-		break;
+-	default:
+-		addChar();
+-		nextToken = EOF;
+-		break;
++
++
++
++void term() {
++	printf("Enter <term>\n");
++	/* Parse the first factor */
++	factor();
++	/* As long as the next token is * or /, get the
++	next token and parse the next factor */
++	while (nextToken == MULT_OP || nextToken == DIV_OP) {
++		lex();
++		factor();
+ 	}
+-	return nextToken;
+-}
++	printf("Exit <term>\n");
++} /* End of function term */
++
++
++
++/* expr
++Parses strings in the language generated by the rule:
++<expr> -> <term> {(+ | -) <term>}
++*/
++void expr() {
++	printf("Enter <expr>\n");
++	/* Parse the first term */
++	term();
++	/* As long as the next token is + or -, get
++	the next token and parse the next term */
++	while (nextToken == ADD_OP || nextToken == SUB_OP) {
++		lex();
++		term();
++	}
++	printf("Exit <expr>\n");
++} /* End of function expr */
++
++
++
++
++
++
++/* term
++Parses strings in the language generated by the rule:
++<term> -> <factor> {(* | /) <factor>)
++*/
++
++
+ 
+ 
+ /* addChar - a function to add nextChar to lexeme */
+@@ -186,14 +209,15 @@ void addChar() {
+ 
+ 
+ /* getChar - a function to get the next character of
+- input and determine its character class */
++input and determine its character class */
+ void getChar() {
+-	if ((nextChar = getc(in_fp)) != EOF) {
++	if (line[indexChar] != '\n' && line[indexChar] != '\0') {
++		nextChar = line[indexChar ++];
+ 		if (isalpha(nextChar))
+ 			charClass = LETTER;
+ 		else if (isdigit(nextChar))
+ 			charClass = DIGIT;
+-		else charClass = UNKNOWN;
++			else charClass = UNKNOWN;
+ 	}
+ 	else
+ 		charClass = EOF;
+@@ -201,7 +225,9 @@ void getChar() {
+ 
+ 
+ /* getNonBlank - a function to call getChar until it
+- returns a non-whitespace character */
++returns a non-
++whitespace
++character */
+ void getNonBlank() {
+ 	while (isspace(nextChar))
+ 		getChar();
+@@ -209,12 +235,12 @@ void getNonBlank() {
+ 
+ 
+ /* lex - a simple lexical analyzer for arithmetic
+- expressions */
++expressions */
+ int lex() {
+ 	lexLen = 0;
+ 	getNonBlank();
+ 	switch (charClass) {
+-	/* Parse identifiers */
++		/* Parse identifiers */
+ 		case LETTER:
+ 			addChar();
+ 			getChar();
+@@ -246,9 +272,9 @@ int lex() {
+ 			lexeme[1] = 'O';
+ 			lexeme[2] = 'F';
+ 			lexeme[3] = 0;
+-			break;	
+- 	} /* End of switch */
+-	printf("Next token is: %d, Next lexeme is %s\n",
+- 	nextToken, lexeme);
+- 	return nextToken;
+-} /* End of function lex */
+\ No newline at end of file
++		break;
++	} /* End of switch */
++	printf("Next token is: %d, Next lexeme is %s\n", nextToken, lexeme);
++	return nextToken;
++} /* End of function lex */
++
+diff --git a/sample.in b/sample.in
+index 585c22d..4eac9b6 100644
+--- a/sample.in
++++ b/sample.in
+@@ -1 +1,2 @@
++(sum + 47) / total
+ (sum + 47) / total
+\ No newline at end of file
+
+commit 2172c3378919f4b4728460721437fd6048d03c05
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Wed Mar 22 23:52:35 2017 -0400
+
+    Added expr, term, factor, and error function.
+
+diff --git a/parser b/parser
+index 286c4ab..1843969 100755
+Binary files a/parser and b/parser differ
+diff --git a/parser.c b/parser.c
+index cd1698c..ae7ac19 100644
+--- a/parser.c
++++ b/parser.c
+@@ -3,6 +3,7 @@
+ //  Adapted from Concepts of Programming Languages - Robert W. Sebesta
+ 
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <ctype.h>
+ 
+ 
+@@ -23,6 +24,9 @@ void getChar();
+ void getNonBlank();
+ int lex();
+ void expr();
++void term();
++void factor();
++void error();
+ 
+ /* Character classes */
+ #define LETTER 0
+@@ -50,6 +54,7 @@ else {
+ 	getChar();
+ 	do {
+ 	lex();
++	expr();
+ 	} while (nextToken != EOF);
+ }
+ return 0;
+@@ -61,19 +66,77 @@ Parses strings in the language generated by the rule:
+ <expr> -> <term> {(+ | -) <term>}
+ */
+ void expr() {
+-printf("Enter <expr>\n");
+-/* Parse the first term */
+-term();
+-/* As long as the next token is + or -, get
+-the next token and parse the next term */
+-while (nextToken == ADD_OP || nextToken == SUB_OP) {
+-lex();
+-term();
+-}
+-printf("Exit <expr>\n");
++	printf("Enter <expr>\n");
++	/* Parse the first term */
++	term();
++	/* As long as the next token is + or -, get
++	the next token and parse the next term */
++	while (nextToken == ADD_OP || nextToken == SUB_OP) {
++	lex();
++	term();
++	}
++	printf("Exit <expr>\n");
+ } /* End of function expr */
+ 
+ 
++/* term
++Parses strings in the language generated by the rule:
++<term> -> <factor> {(* | /) <factor>)
++*/
++void term() {
++	printf("Enter <term>\n");
++	/* Parse the first factor */
++	factor();
++	/* As long as the next token is * or /, get the
++	next token and parse the next factor */
++	while (nextToken == MULT_OP || nextToken == DIV_OP) {
++	lex();
++	factor();
++	}
++	printf("Exit <term>\n");
++} /* End of function term */ 
++
++
++/* factor
++Parses strings in the language generated by the rule:
++<factor> -> id | int_constant | ( <expr )
++*/
++void factor() {
++	printf("Enter <factor>\n");
++	/* Determine which RHS */
++	if (nextToken == IDENT || nextToken == INT_LIT)
++	/* Get the next token */
++		lex();
++	/* If the RHS is ( <expr>), call lex to pass over the
++	left parenthesis, call expr, and check for the right
++	parenthesis */
++	else {
++		if (nextToken == LEFT_PAREN) {
++			lex();
++			expr();
++		if (nextToken == RIGHT_PAREN)
++			lex();
++		else
++			error();
++		} /* End of if (nextToken == ... */
++	/* It was not an id, an integer literal, or a left
++	parenthesis */
++		else
++			error();
++	} /* End of else */
++	printf("Exit <factor>\n");;
++}
++/* End of function factor */
++
++/* error
++Prints syntax error with row and column number where error occurred.
++*/
++void error() {
++	printf("Syntax Error!\n");
++	exit(0);
++}
++
++
+ /* lookup - a function to lookup operators and parentheses
+  and return the token */
+ int lookup(char ch) {
+
+commit 09ea424f42006076ab9d6995a0edbcb3c5f5f77e
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Wed Mar 22 22:14:50 2017 -0400
+
+    updated parser
+
+diff --git a/parser.c b/parser.c
+index 71e4ab2..cd1698c 100644
+--- a/parser.c
++++ b/parser.c
+@@ -22,6 +22,7 @@ void addChar();
+ void getChar();
+ void getNonBlank();
+ int lex();
++void expr();
+ 
+ /* Character classes */
+ #define LETTER 0
+@@ -55,6 +56,24 @@ return 0;
+ }
+ 
+ 
++/* expr
++Parses strings in the language generated by the rule:
++<expr> -> <term> {(+ | -) <term>}
++*/
++void expr() {
++printf("Enter <expr>\n");
++/* Parse the first term */
++term();
++/* As long as the next token is + or -, get
++the next token and parse the next term */
++while (nextToken == ADD_OP || nextToken == SUB_OP) {
++lex();
++term();
++}
++printf("Exit <expr>\n");
++} /* End of function expr */
++
++
+ /* lookup - a function to lookup operators and parentheses
+  and return the token */
+ int lookup(char ch) {
+
+commit 58e6de615cd6741e1d31ac21858b677972c60bf7
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Wed Mar 22 15:26:27 2017 -0400
+
+    first simple parser from book; now looking at other one
+
+diff --git a/parser b/parser
+new file mode 100755
+index 0000000..286c4ab
+Binary files /dev/null and b/parser differ
+diff --git a/parser.c b/parser.c
+new file mode 100644
+index 0000000..71e4ab2
+--- /dev/null
++++ b/parser.c
+@@ -0,0 +1,172 @@
++/* parser.c - a lexical analyzer system and parser for simple
++ arithmetic expressions */
++//  Adapted from Concepts of Programming Languages - Robert W. Sebesta
++
++#include <stdio.h>
++#include <ctype.h>
++
++
++/* Global declarations */
++
++/* Variables */
++int charClass;
++char lexeme [100];
++char nextChar;
++int lexLen;
++int token;
++int nextToken;
++FILE *in_fp, *fopen();
++
++/* Function declarations */
++void addChar();
++void getChar();
++void getNonBlank();
++int lex();
++
++/* Character classes */
++#define LETTER 0
++#define DIGIT 1
++#define UNKNOWN 99
++
++/* Token codes */
++#define INT_LIT 10
++#define IDENT 11
++#define ASSIGN_OP 20
++#define ADD_OP 21
++#define SUB_OP 22
++#define MULT_OP 23
++#define DIV_OP 24
++#define LEFT_PAREN 25
++#define RIGHT_PAREN 26
++
++
++/* main driver */
++int main() {
++/* Open the input data file and process its contents */
++if ((in_fp = fopen("sample.in", "r")) == NULL)
++	printf("ERROR - cannot open input file. \n");
++else {
++	getChar();
++	do {
++	lex();
++	} while (nextToken != EOF);
++}
++return 0;
++}
++
++
++/* lookup - a function to lookup operators and parentheses
++ and return the token */
++int lookup(char ch) {
++	switch (ch) {
++		case '(':
++		addChar();
++		nextToken = LEFT_PAREN;
++		break;
++	case ')':
++		addChar();
++		nextToken = RIGHT_PAREN;
++		break;
++	case '+':
++		addChar();
++		nextToken = ADD_OP;
++		break;
++	case '-':
++		addChar();
++		nextToken = SUB_OP;
++		break;
++	case '*':
++		addChar();
++		nextToken = MULT_OP;
++		break;
++	case '/':
++		addChar();
++		nextToken = DIV_OP;
++		break;
++	default:
++		addChar();
++		nextToken = EOF;
++		break;
++	}
++	return nextToken;
++}
++
++
++/* addChar - a function to add nextChar to lexeme */
++void addChar() {
++	if (lexLen <= 98) {
++		lexeme[lexLen++] = nextChar;
++		lexeme[lexLen] = 0;
++	}
++	else
++		printf("Error - lexeme is too long \n");
++}
++
++
++/* getChar - a function to get the next character of
++ input and determine its character class */
++void getChar() {
++	if ((nextChar = getc(in_fp)) != EOF) {
++		if (isalpha(nextChar))
++			charClass = LETTER;
++		else if (isdigit(nextChar))
++			charClass = DIGIT;
++		else charClass = UNKNOWN;
++	}
++	else
++		charClass = EOF;
++}
++
++
++/* getNonBlank - a function to call getChar until it
++ returns a non-whitespace character */
++void getNonBlank() {
++	while (isspace(nextChar))
++		getChar();
++}
++
++
++/* lex - a simple lexical analyzer for arithmetic
++ expressions */
++int lex() {
++	lexLen = 0;
++	getNonBlank();
++	switch (charClass) {
++	/* Parse identifiers */
++		case LETTER:
++			addChar();
++			getChar();
++			while (charClass == LETTER || charClass == DIGIT) {
++				addChar();
++				getChar();
++			}
++			nextToken = IDENT;
++			break;
++		/* Parse integer literals */
++		case DIGIT:
++			addChar();
++			getChar();
++			while (charClass == DIGIT) {
++				addChar();
++				getChar();
++			}
++			nextToken = INT_LIT;
++			break;
++		/* Parentheses and operators */
++		case UNKNOWN:
++			lookup(nextChar);
++			getChar();
++			break;
++		/* EOF */
++		case EOF:
++			nextToken = EOF;
++			lexeme[0] = 'E';
++			lexeme[1] = 'O';
++			lexeme[2] = 'F';
++			lexeme[3] = 0;
++			break;	
++ 	} /* End of switch */
++	printf("Next token is: %d, Next lexeme is %s\n",
++ 	nextToken, lexeme);
++ 	return nextToken;
++} /* End of function lex */
+\ No newline at end of file
+diff --git a/sample.in b/sample.in
+new file mode 100644
+index 0000000..585c22d
+--- /dev/null
++++ b/sample.in
+@@ -0,0 +1 @@
++(sum + 47) / total
+\ No newline at end of file
+
+commit c23f166dd32e0159c6c5504e7d561867f020739d
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Wed Mar 22 14:51:11 2017 -0400
+
+    README changes
+
+diff --git a/README.md b/README.md
+index fdb8f36..338acfc 100644
+--- a/README.md
++++ b/README.md
+@@ -13,7 +13,7 @@ Make a single program in the C language by augmenting and integrating the exampl
+ 
+ 
+                                 parser <filename> 
+-                    Where, filename should be replaced by a real file name.
++                    Where, <filename> should be replaced by a real file name.
+ 
+ *Note: Here textbook refers to “Concepts Of Programming Languages” by Robert W. Sebesta.*
+ 
+
+commit 4c78941683dd7d8a321378dee679d872140c244a
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Wed Mar 22 14:49:54 2017 -0400
+
+    README changes
+
+diff --git a/README.md b/README.md
+index 46f641e..fdb8f36 100644
+--- a/README.md
++++ b/README.md
+@@ -12,7 +12,7 @@
+ Make a single program in the C language by augmenting and integrating the example C code in Section 4.2 and 4.4.1 on the textbook. The program is supposed to read a text file line by line. For each line, it produces the output similar to what's shown on the textbook. If a syntax error is found, it should print an error message indicating where the error occurs in the line. The program should be invoked by the following command: 
+ 
+ 
+-                                parser *<filename>* 
++                                parser <filename> 
+                     Where, filename should be replaced by a real file name.
+ 
+ *Note: Here textbook refers to “Concepts Of Programming Languages” by Robert W. Sebesta.*
+
+commit 5c2f8530a7995c62916ec68c770d580bb9dcdefb
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Wed Mar 22 14:49:17 2017 -0400
+
+    README changes
+
+diff --git a/README.md b/README.md
+index 783ed63..46f641e 100644
+--- a/README.md
++++ b/README.md
+@@ -7,12 +7,12 @@
+ 
+ 
+ 
+-## **Assignment:**
++## **Description:**
+ 
+ Make a single program in the C language by augmenting and integrating the example C code in Section 4.2 and 4.4.1 on the textbook. The program is supposed to read a text file line by line. For each line, it produces the output similar to what's shown on the textbook. If a syntax error is found, it should print an error message indicating where the error occurs in the line. The program should be invoked by the following command: 
+ 
+ 
+-                                parser <filename> 
++                                parser *<filename>* 
+                     Where, filename should be replaced by a real file name.
+ 
+ *Note: Here textbook refers to “Concepts Of Programming Languages” by Robert W. Sebesta.*
+
+commit 6e8ea3a9ac198270c7012f0a11ddcc80ed0af77c
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Wed Mar 22 14:47:21 2017 -0400
+
+    README changes
+
+diff --git a/README.md b/README.md
+index e69de29..783ed63 100644
+--- a/README.md
++++ b/README.md
+@@ -0,0 +1,19 @@
++# README
++
++# Simple C Parser - Recursive Descent
++## Author: Saurav Keshari Aryal
++## Assignment: Structures of Programming Languages - S2017
++## Howard University, Washington DC.
++
++
++
++## **Assignment:**
++
++Make a single program in the C language by augmenting and integrating the example C code in Section 4.2 and 4.4.1 on the textbook. The program is supposed to read a text file line by line. For each line, it produces the output similar to what's shown on the textbook. If a syntax error is found, it should print an error message indicating where the error occurs in the line. The program should be invoked by the following command: 
++
++
++                                parser <filename> 
++                    Where, filename should be replaced by a real file name.
++
++*Note: Here textbook refers to “Concepts Of Programming Languages” by Robert W. Sebesta.*
++
+
+commit c4435ad7e2b50e1ea124f99d346f38896f820dba
+Author: Saurav-K-Aryal <saurav.aryal@bison.howard.edu>
+Date:   Wed Mar 22 14:34:36 2017 -0400
+
+    initial README commit
+
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..e69de29
