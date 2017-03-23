@@ -61,6 +61,7 @@ int main() {
 		printf("ERROR - cannot open front.in \n");
 	else {
 		while ((read = getline(&line, &len, in_fp)) != -1) {
+			col_num = 0;
 			printf("\n\n");
 			row_num++;
 			indexChar = 0;
