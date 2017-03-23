@@ -26,7 +26,7 @@ ssize_t read;
 char* line = NULL;
 int indexChar;
 int row_num=0;
-int col_num=0;
+int col_num=1;
 
 /* Function declarations */
 void addChar();
@@ -61,7 +61,7 @@ int main() {
 		printf("ERROR - cannot open front.in \n");
 	else {
 		while ((read = getline(&line, &len, in_fp)) != -1) {
-			col_num = 0;
+			col_num = 1;
 			printf("\n\n");
 			row_num++;
 			indexChar = 0;
@@ -119,7 +119,7 @@ int lookup(char ch) {
 }
 
 void error(){
-	printf("ERROR! in line %d at column %d\n\n", row_num, col_num);
+	printf("Syntax ERROR! in line %d at column %d\n\n", row_num, col_num);
 	exit(0);
 }
 
