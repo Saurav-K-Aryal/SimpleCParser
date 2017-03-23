@@ -1,2 +1,5 @@
-parser: parser.c
-     gcc -o parser parser.c -I.
+parser : parser.c 
+	gcc -o parser parser.c
+
+clean:
+	rm -f parser
